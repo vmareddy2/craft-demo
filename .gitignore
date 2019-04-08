@@ -2,3 +2,5 @@
 terraformfiles/.terraform
 *.swp
 *.tfstate*
+.project/*
+.*
