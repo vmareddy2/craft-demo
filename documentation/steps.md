@@ -9,5 +9,5 @@
 7. Create Autoscaling Group and tie Launch conifguration with it.
 8. Create Application Load Balancer and tie target group with the autoscaling group.
 9. Create Basic Monitoring
-10. 
+10. aws s3, store app, download to ec2 instance.
 
