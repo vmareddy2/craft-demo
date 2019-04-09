@@ -18,8 +18,12 @@ DB Tier:
 1. Monitoring on ALB request count, request/target, response times, Status failures
 2. Monitoring on EC2 instance CPU, Disk I/O, Status failures?
 3. DB Monitoring??
+4. App/tomcat monitoring ? - collectd, statsd. Simpler way another use awscli and push using script
 
 # Alerting
 1. Alert primarily on app response times, Status failures (> 1), EC2 Instance count (want 2 running at the very minimum)
 2. Test autoscaling
 
+# Sample App
+Planned to leverage https://github.com/kasundharmadasa/LiquorStoreServlet (for just a non rds app)
+https://www3.ntu.edu.sg/home/ehchua/programming/java/JavaWebDBApp.html (for an app using mysql)
