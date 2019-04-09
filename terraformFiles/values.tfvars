@@ -6,4 +6,6 @@ vpc  = {
  cidrBlock = "192.0.0.0/16"
  appcidrBlock1 = "192.0.1.0/24"
  appcidrBlock2 = "192.0.2.0/24"
+ webcidrBlock1 = "192.0.3.0/24"
+ webcidrBlock2 = "192.0.4.0/24"
 }

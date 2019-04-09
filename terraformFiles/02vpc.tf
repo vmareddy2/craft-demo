@@ -45,6 +45,26 @@ resource "aws_subnet" "app-subnet2" {
   map_public_ip_on_launch = "true"
 }
 
+resource "aws_subnet" "web-subnet1" {
+  vpc_id = "${aws_vpc.vpc-awsTC.id}"
+  cidr_block = "${var.vpc["webcidrBlock1"]}"
+  tags = {
+  	Name =  "${var.vpc["name"]}-web-subnet1"
+  }
+  availability_zone="${var.availability_zone1}"
+  map_public_ip_on_launch = "true"
+}
+
+resource "aws_subnet" "web-subnet2" {
+  vpc_id = "${aws_vpc.vpc-awsTC.id}"
+  cidr_block = "${var.vpc["webcidrBlock2"]}"
+  tags = {
+  	Name =  "${var.vpc["name"]}-web-subnet2"
+  }
+  availability_zone="${var.availability_zone2}"
+  map_public_ip_on_launch = "true"
+}
+
 resource "aws_route_table_association" "rt1" {
   subnet_id      = "${aws_subnet.app-subnet1.id}"
   route_table_id = "${aws_route_table.public-routetable.id}"
@@ -52,6 +72,16 @@ resource "aws_route_table_association" "rt1" {
 
 resource "aws_route_table_association" "rt2" {
   subnet_id      = "${aws_subnet.app-subnet2.id}"
+  route_table_id = "${aws_route_table.public-routetable.id}"
+}
+
+resource "aws_route_table_association" "rt3" {
+  subnet_id      = "${aws_subnet.web-subnet1.id}"
+  route_table_id = "${aws_route_table.public-routetable.id}"
+}
+
+resource "aws_route_table_association" "rt4" {
+  subnet_id      = "${aws_subnet.web-subnet2.id}"
   route_table_id = "${aws_route_table.public-routetable.id}"
 }
 
