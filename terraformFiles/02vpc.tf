@@ -65,6 +65,26 @@ resource "aws_subnet" "web-subnet2" {
   map_public_ip_on_launch = "true"
 }
 
+resource "aws_subnet" "db-subnet1" {
+  vpc_id = "${aws_vpc.vpc-awsTC.id}"
+  cidr_block = "${var.vpc["dbcidrBlock1"]}"
+  tags = {
+  	Name =  "${var.vpc["name"]}-db-subnet1"
+  }
+  availability_zone="${var.availability_zone1}"
+  map_public_ip_on_launch = "true"
+}
+
+resource "aws_subnet" "db-subnet2" {
+  vpc_id = "${aws_vpc.vpc-awsTC.id}"
+  cidr_block = "${var.vpc["dbcidrBlock2"]}"
+  tags = {
+  	Name =  "${var.vpc["name"]}-db-subnet2"
+  }
+  availability_zone="${var.availability_zone2}"
+  map_public_ip_on_launch = "true"
+}
+
 resource "aws_route_table_association" "rt1" {
   subnet_id      = "${aws_subnet.app-subnet1.id}"
   route_table_id = "${aws_route_table.public-routetable.id}"
