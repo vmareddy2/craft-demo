@@ -25,5 +25,4 @@ DB Tier:
 2. Test autoscaling
 
 # Sample App
-Planned to leverage https://github.com/kasundharmadasa/LiquorStoreServlet (for just a non rds app)
-https://www3.ntu.edu.sg/home/ehchua/programming/java/JavaWebDBApp.html (for an app using mysql)
+Planned to leverage https://www3.ntu.edu.sg/home/ehchua/programming/java/JavaWebDBApp.html (for an app using mysql)
