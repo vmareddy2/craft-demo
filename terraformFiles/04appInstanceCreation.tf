@@ -8,7 +8,7 @@ resource "aws_security_group" "simpleAppSG" {
     from_port   = 8080
     to_port     = 8080
     protocol    = "TCP"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["${var.vpc["webcidrBlock1"]}","${var.vpc["webcidrBlock2"]}"]
   }
   
   ingress {
