@@ -28,60 +28,6 @@ resource "aws_security_group" "simpleAppSG" {
   }
 }
 
-resource "aws_iam_role" "tc-ec2-role" {
-    name = "tc-ec2-role"
-    assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "ec2.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": "test"
-    }
-  ]
-}
-EOF
-}
-
-data "aws_iam_policy_document" "tc-ec2-policy-document" {
-    statement {
-            sid = "VisualEditor0"
-            effect = "Allow"
-            actions = ["elasticloadbalancing:RegisterTargets"]
-            resources = ["${aws_lb_target_group.web_alb_tg.arn}"]
-        }
-}
-
-data "aws_iam_policy_document" "tc-ec2-policy2-document" {
-    statement {
-            sid = "VisualEditor1"
-            effect = "Allow"
-            actions = ["ec2:DescribeInstances"]
-            resources = ["*"]
-        }
-}
-
-resource "aws_iam_role_policy" "tc-ec2-policy" {
-  name   = "tc-ec2-policy"
-  role = "${aws_iam_role.tc-ec2-role.id}"
-  policy = "${data.aws_iam_policy_document.tc-ec2-policy-document.json}"
-}
-
-resource "aws_iam_role_policy" "tc-ec2-policy2" {
-  name   = "tc-ec2-policy2"
-  role = "${aws_iam_role.tc-ec2-role.id}"
-  policy = "${data.aws_iam_policy_document.tc-ec2-policy2-document.json}"
-}
-
-resource "aws_iam_instance_profile" "tc-ec2_profile" {
-  name = "tc-ec2_profile"
-  role = "${aws_iam_role.tc-ec2-role.id}"
-}
-
 resource "aws_launch_configuration" "simpleAppLC" {
   lifecycle {
     create_before_destroy = true
@@ -96,14 +42,13 @@ resource "aws_launch_configuration" "simpleAppLC" {
   }
   user_data = "${file("tcUserData")}"
   security_groups = ["${aws_security_group.simpleAppSG.id}"]
-  iam_instance_profile = "${aws_iam_instance_profile.tc-ec2_profile.name}"
 }
 
 resource "aws_autoscaling_group" "simpleAppAutoScale" {
 	name = "simpleAppAutoScale"
 	launch_configuration = "${aws_launch_configuration.simpleAppLC.name}"
-	min_size = 1
-	max_size = 1
+	min_size = 2
+	max_size = 5
 	vpc_zone_identifier = ["${aws_subnet.app-subnet1.id}", "${aws_subnet.app-subnet2.id}"]
 	lifecycle {
     	create_before_destroy = true
@@ -117,3 +62,8 @@ resource "aws_autoscaling_group" "simpleAppAutoScale" {
     ]
 }
 
+# Create a new ALB Target Group attachment
+resource "aws_autoscaling_attachment" "web_tc_attach" {
+  autoscaling_group_name = "${aws_autoscaling_group.simpleAppAutoScale.id}"
+  alb_target_group_arn   = "${aws_lb_target_group.web_alb_tg.arn}"
+}

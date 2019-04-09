@@ -1,7 +1,4 @@
 #!/bin/bash
-id=`curl http://169.254.169.254/latest/meta-data/instance-id`
-tg=`aws ec2 describe-instances --instance-id $id --region=us-east-1 | grep arn:aws:elasticloadbalancing | grep target | awk -F\" '{ print $4 }'`
-aws elbv2 register-targets --target-group-arn $tg --targets Id=$id --region=us-east-1
 yum -y install docker
 systemctl start docker
 docker pull tomcat > /var/log/test.out
